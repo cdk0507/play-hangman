@@ -1,0 +1,37 @@
+{
+  "name": "puzzle-project",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "run-p type-check \"build-only {@}\" --",
+    "deploy": "gh-pages -d dist",
+    "build-only": "vite build",
+    "dev": "vite",
+    "predeploy": "npm run build",
+    "preview": "vite preview --watch",
+    "type-check": "vue-tsc --build --force"
+  },
+  "dependencies": {
+    "vue": "^3.3.11",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.2",
+    "@types/node": "^18.19.3",
+    "@vitejs/plugin-vue": "^5.0.3",
+    "@vue/tsconfig": "^0.5.0",
+    "autoprefixer": "^10.4.17",
+    "gh-pages": "^6.1.1",
+    "npm-run-all2": "^6.1.1",
+    "postcss": "^8.4.33",
+    "postcss-nesting": "^12.0.2",
+    "sass": "^1.71.1",
+    "tailwindcss": "^3.4.1",
+    "typescript": "~5.3.0",
+    "vite": "^5.0.12",
+    "vue-cli-plugin-style-resources-loader": "~0.1.5",
+    "vue-tsc": "^1.8.25"
+  },
+  "homepage": "https://asd0905.github.io/puzzle-project",
+  "type": "module"
+}
