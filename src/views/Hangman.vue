@@ -49,7 +49,7 @@ export default defineComponent({
 			},
 			isAlert: false,
 			canvas: {} as any,
-			isLoading: false,
+			isLoading: true,
 		};
 	},
 	mounted() {
@@ -201,7 +201,12 @@ export default defineComponent({
 	<section class="mt-10 game-section">
 		<div class="py-10">
 			<div class="hangman-container">
-				<canvas class="mx-auto" ref="hangmanCanvas" width="150" height="200"></canvas>
+				<canvas
+					class="mx-auto"
+					ref="hangmanCanvas"
+					width="150"
+					height="200"
+				></canvas>
 			</div>
 		</div>
 		<div class="input-box mb-8 mt-5">
@@ -211,7 +216,8 @@ export default defineComponent({
 				disabled
 				v-for="(a, index) in answerTemp"
 				v-bind:value="a"
-				:key="index" />
+				:key="index"
+			/>
 		</div>
 		<div class="letter-box">
 			<button
@@ -219,7 +225,8 @@ export default defineComponent({
 				:key="d.letter"
 				:class="[{ fail: d.isPass === false }, { pass: d.isPass }]"
 				:disabled="d.isPass === false || d.isPass"
-				v-on:click="checkAnswer(d)">
+				v-on:click="checkAnswer(d)"
+			>
 				{{ d.letter }}
 			</button>
 		</div>
