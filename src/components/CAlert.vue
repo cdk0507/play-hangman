@@ -40,6 +40,10 @@ export default {
 .content {
 	max-width: 300px;
 	@apply w-full rounded bg-white px-3 py-5 text-center;
+
+	> p {
+		color: #333;
+	}
 }
 button {
 	background-color: $color-point;

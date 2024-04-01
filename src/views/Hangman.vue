@@ -38,11 +38,39 @@ export default defineComponent({
 			};
 		});
 
+		const initialKeyboardValues = [
+			{
+				id: 1,
+				keys: ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+			},
+			{
+				id: 2,
+				keys: ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
+			},
+			{
+				id: 3,
+				keys: ["z", "x", "c", "v", "b", "n", "m"],
+			},
+		];
+
+		const keyboardGroup = initialKeyboardValues.map((row) => {
+			return {
+				id: row.id,
+				keys: row.keys.map((key) => {
+					return {
+						letter: key,
+						isPass: undefined,
+					};
+				}),
+			};
+		});
+
 		return {
 			incorrectAttempts: 0,
 			answer: answer,
 			answerTemp: answerTemp,
 			alphabet: alphabetArr,
+			keyboardGroup: keyboardGroup,
 			ctx: {} as any,
 			params: {
 				text: "정답입니다.",
@@ -58,6 +86,7 @@ export default defineComponent({
 			return;
 		}
 		this.ctx = this.canvas.getContext("2d"); // 옵셔널 체이닝 연산자 사용
+		this.ctx.strokeStyle = "white";
 		this.ctx.moveTo(20, 0);
 		this.ctx.lineTo(20, 200);
 		this.ctx.stroke();
@@ -106,7 +135,7 @@ export default defineComponent({
 				this.ctx.beginPath();
 				this.ctx.arc(100, 40, 20, 0, 2 * Math.PI);
 				this.ctx.stroke();
-				this.ctx.fillStyle = "black";
+				this.ctx.fillStyle = "white";
 				this.ctx.fill();
 			}
 
@@ -213,15 +242,17 @@ export default defineComponent({
 				v-bind:value="a"
 				:key="index" />
 		</div>
-		<div class="letter-box">
-			<button
-				v-for="d in alphabet"
-				:key="d.letter"
-				:class="[{ fail: d.isPass === false }, { pass: d.isPass }]"
-				:disabled="d.isPass === false || d.isPass"
-				v-on:click="checkAnswer(d)">
-				{{ d.letter }}
-			</button>
+		<div class="keyboard">
+			<div class="keyboard-row" v-for="group in keyboardGroup">
+				<button
+					v-for="d in group.keys"
+					:key="d.letter"
+					:class="[{ fail: d.isPass === false }, { pass: d.isPass }]"
+					:disabled="d.isPass === false || d.isPass"
+					v-on:click="checkAnswer(d)">
+					{{ d.letter }}
+				</button>
+			</div>
 		</div>
 	</section>
 </template>
@@ -232,7 +263,7 @@ export default defineComponent({
 	max-width: 500px;
 
 	.hangman-container {
-		border-bottom: 2px solid #000;
+		border-bottom: 1px solid #fff;
 	}
 }
 .input-box {
@@ -241,35 +272,48 @@ export default defineComponent({
 	justify-content: center;
 }
 .answer-input {
-	margin: 0 5px;
-	border-bottom: 1px solid black;
+	margin: 0 6px;
+	padding: 6px;
+	border-bottom: 2px solid #3a3a3c;
 	max-width: 8%;
+	font-size: 30px;
+	font-weight: bold;
 	text-align: center;
 	background-color: transparent;
 }
-.letter-box {
-	display: flex;
-	justify-content: center;
-	grid-template-columns: repeat(auto-fit, minmax(10%, auto));
-	flex-wrap: wrap;
+.keyboard {
+	&-row {
+		margin-bottom: 8px;
+		display: flex;
+		justify-content: center;
+	}
+
 	button {
-		margin: 1%;
-		display: block;
-		background-color: hsla(160, 100%, 37%, 0.4);
-		min-width: 52px;
-		color: #fff;
-		padding: 14px 20px;
-		border-radius: 10px;
+		padding: 0;
+		width: 43px;
+		height: 58px;
+		background-color: #818384;
+		font-size: 20px;
+		font-weight: bold;
+		color: #f8f8f8;
+		border-radius: 4px;
+
+		&:not(:last-child) {
+			margin-right: 6px;
+		}
 		&:hover {
-			background-color: hsla(160, 100%, 37%, 1);
+			background-color: #696969;
 		}
 
 		&.fail {
 			background-color: gray;
 			@extend .vibration;
 		}
+		&.fail {
+			background-color: #3a3a3c;
+		}
 		&.pass {
-			background-color: hsla(160, 100%, 37%, 1);
+			background-color: #538d4e;
 			@extend .vibration;
 		}
 	}
