@@ -77,7 +77,7 @@ export default defineComponent({
 			},
 			isAlert: false,
 			canvas: {} as any,
-			isLoading: false,
+			isLoading: true,
 		};
 	},
 	mounted() {
