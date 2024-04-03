@@ -3,7 +3,7 @@ import { defineComponent } from "vue";
 import CAlert from "../components/CAlert.vue";
 import CLoading from "../components/CLoading.vue";
 
-export interface IalphabetProps {
+export interface IKeyProps {
 	letter: string;
 	isPass: boolean | undefined;
 }
@@ -116,8 +116,16 @@ export default defineComponent({
 		},
 
 		drawHangman() {
+			// 캔버스 초기화
+			this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+			this.ctx.beginPath();
+			this.ctx.moveTo(20, 0);
+			this.ctx.lineTo(20, 200);
+			this.ctx.stroke();
+
 			if (this.incorrectAttempts >= 1) {
 				// 긴줄
+				this.ctx.beginPath();
 				this.ctx.moveTo(20, 0);
 				this.ctx.lineTo(150, 0);
 				this.ctx.stroke();
@@ -125,6 +133,7 @@ export default defineComponent({
 
 			if (this.incorrectAttempts >= 2) {
 				// 짧은 줄
+				this.ctx.beginPath();
 				this.ctx.moveTo(100, 0);
 				this.ctx.lineTo(100, 20);
 				this.ctx.stroke();
@@ -141,6 +150,7 @@ export default defineComponent({
 
 			if (this.incorrectAttempts >= 4) {
 				// Body
+				this.ctx.beginPath();
 				this.ctx.moveTo(100, 60);
 				this.ctx.lineTo(100, 120);
 				this.ctx.stroke();
@@ -148,6 +158,7 @@ export default defineComponent({
 
 			if (this.incorrectAttempts >= 5) {
 				// Left Arm
+				this.ctx.beginPath();
 				this.ctx.moveTo(100, 70);
 				this.ctx.lineTo(60, 90);
 				this.ctx.stroke();
@@ -155,6 +166,7 @@ export default defineComponent({
 
 			if (this.incorrectAttempts >= 6) {
 				// Right Arm
+				this.ctx.beginPath();
 				this.ctx.moveTo(100, 70);
 				this.ctx.lineTo(140, 90);
 				this.ctx.stroke();
@@ -162,6 +174,7 @@ export default defineComponent({
 
 			if (this.incorrectAttempts >= 7) {
 				// Left Leg
+				this.ctx.beginPath();
 				this.ctx.moveTo(100, 120);
 				this.ctx.lineTo(70, 160);
 				this.ctx.stroke();
@@ -169,13 +182,14 @@ export default defineComponent({
 
 			if (this.incorrectAttempts >= 8) {
 				// Right Leg
+				this.ctx.beginPath();
 				this.ctx.moveTo(100, 120);
 				this.ctx.lineTo(130, 160);
 				this.ctx.stroke();
 			}
 		},
 
-		checkAnswer(data: IalphabetProps) {
+		checkAnswer(data: IKeyProps) {
 			[...this.answer].filter((d, i) => {
 				if (data.letter.toLowerCase() === d.toLowerCase()) {
 					data.isPass = true;
@@ -208,16 +222,20 @@ export default defineComponent({
 			this.incorrectAttempts = 0;
 		},
 
-		resetAlphabet() {
-			for (const d of this.alphabet) {
-				d.isPass = undefined;
-			}
+		resetKeyboard() {
+			this.keyboardGroup.forEach((group) => {
+				group.keys.forEach((key: IKeyProps) => {
+					if (key.hasOwnProperty("isPass")) {
+						key.isPass = undefined;
+					}
+				});
+			});
 		},
 
 		confirm(data: boolean) {
 			this.isAlert = !data;
 			this.resetCanvas();
-			this.resetAlphabet();
+			this.resetKeyboard();
 			this.getDate();
 		},
 	},
